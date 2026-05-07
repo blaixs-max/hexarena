@@ -1,0 +1,104 @@
+[gd_scene load_steps=6 format=3 uid="uid://bha1pl001"]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/components/face_visual.gd" id="2_face"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
+radius = 22.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_p"]
+font_size = 14
+font_color = Color(1, 1, 1, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.95)
+
+[sub_resource type="SceneReplicationConfig" id="ReplicationConfig_player"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:linear_velocity")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:rotation")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+properties/3/path = NodePath(":team")
+properties/3/spawn = true
+properties/3/replication_mode = 0
+properties/4/path = NodePath(":label_text")
+properties/4/spawn = true
+properties/4/replication_mode = 0
+properties/5/path = NodePath(":input_peer_id")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath(":stamina")
+properties/6/spawn = false
+properties/6/replication_mode = 1
+properties/7/path = NodePath("Visual:rotation")
+properties/7/spawn = false
+properties/7/replication_mode = 1
+
+[node name="Player" type="RigidBody2D"]
+linear_damp_mode = 1
+linear_damp = 4.5
+angular_damp_mode = 1
+angular_damp = 8.0
+script = ExtResource("1_player")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_player")
+
+[node name="Shadow" type="Polygon2D" parent="."]
+position = Vector2(3, 6)
+color = Color(0, 0, 0, 0.35)
+polygon = PackedVector2Array(22, 0, 20.32, 8.42, 15.56, 15.56, 8.42, 20.32, 0, 22, -8.42, 20.32, -15.56, 15.56, -20.32, 8.42, -22, 0, -20.32, -8.42, -15.56, -15.56, -8.42, -20.32, 0, -22, 8.42, -20.32, 15.56, -15.56, 20.32, -8.42)
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="StaminaRing" type="Polygon2D" parent="Visual"]
+color = Color(0.4, 1, 0.5, 1)
+polygon = PackedVector2Array(28, 0, 25.88, 10.71, 19.8, 19.8, 10.71, 25.88, 0, 28, -10.71, 25.88, -19.8, 19.8, -25.88, 10.71, -28, 0, -25.88, -10.71, -19.8, -19.8, -10.71, -25.88, 0, -28, 10.71, -25.88, 19.8, -19.8, 25.88, -10.71)
+visible = false
+
+[node name="Ring" type="Polygon2D" parent="Visual"]
+color = Color(1, 0.95, 0.2, 1)
+polygon = PackedVector2Array(31, 0, 28.65, 11.86, 21.92, 21.92, 11.86, 28.65, 0, 31, -11.86, 28.65, -21.92, 21.92, -28.65, 11.86, -31, 0, -28.65, -11.86, -21.92, -21.92, -11.86, -28.65, 0, -31, 11.86, -28.65, 21.92, -21.92, 28.65, -11.86)
+visible = false
+
+[node name="FootL" type="Polygon2D" parent="Visual"]
+color = Color(0.05, 0.05, 0.08, 1)
+polygon = PackedVector2Array(3, 0, 2.12, 2.12, 0, 3, -2.12, 2.12, -3, 0, -2.12, -2.12, 0, -3, 2.12, -2.12)
+
+[node name="FootR" type="Polygon2D" parent="Visual"]
+color = Color(0.05, 0.05, 0.08, 1)
+polygon = PackedVector2Array(3, 0, 2.12, 2.12, 0, 3, -2.12, 2.12, -3, 0, -2.12, -2.12, 0, -3, 2.12, -2.12)
+
+[node name="Outline" type="Polygon2D" parent="Visual"]
+color = Color(1, 1, 1, 0.95)
+polygon = PackedVector2Array(24, 0, 22.18, 9.18, 16.97, 16.97, 9.18, 22.18, 0, 24, -9.18, 22.18, -16.97, 16.97, -22.18, 9.18, -24, 0, -22.18, -9.18, -16.97, -16.97, -9.18, -22.18, 0, -24, 9.18, -22.18, 16.97, -16.97, 22.18, -9.18)
+
+[node name="TeamRing" type="Polygon2D" parent="Visual"]
+color = Color(0.92, 0.41, 0.18, 1)
+polygon = PackedVector2Array(22, 0, 20.32, 8.42, 15.56, 15.56, 8.42, 20.32, 0, 22, -8.42, 20.32, -15.56, 15.56, -20.32, 8.42, -22, 0, -20.32, -8.42, -15.56, -15.56, -8.42, -20.32, 0, -22, 8.42, -20.32, 15.56, -15.56, 20.32, -8.42)
+
+[node name="FaceBg" type="Polygon2D" parent="Visual"]
+visible = false
+color = Color(0.97, 0.82, 0.65, 1)
+polygon = PackedVector2Array(19, 0, 17.55, 7.27, 13.43, 13.43, 7.27, 17.55, 0, 19, -7.27, 17.55, -13.43, 13.43, -17.55, 7.27, -19, 0, -17.55, -7.27, -13.43, -13.43, -7.27, -17.55, 0, -19, 7.27, -17.55, 13.43, -13.43, 17.55, -7.27)
+
+[node name="Face" type="Node2D" parent="Visual"]
+visible = false
+script = ExtResource("2_face")
+
+[node name="Label" type="Label" parent="Visual"]
+offset_left = -16.0
+offset_top = -10.0
+offset_right = 16.0
+offset_bottom = 10.0
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "P"
+label_settings = SubResource("LabelSettings_p")
+
+[node name="Sync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("ReplicationConfig_player")

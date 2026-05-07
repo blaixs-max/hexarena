@@ -1,0 +1,339 @@
+[gd_scene load_steps=8 format=3 uid="uid://bha1pt001"]
+
+[ext_resource type="Script" path="res://scenes/match/pitch.gd" id="1_pitch"]
+
+[sub_resource type="RectangleShape2D" id="WallH"]
+size = Vector2(1660, 20)
+
+[sub_resource type="RectangleShape2D" id="WallVTop"]
+size = Vector2(20, 290)
+
+[sub_resource type="RectangleShape2D" id="GoalBack"]
+size = Vector2(20, 240)
+
+[sub_resource type="RectangleShape2D" id="GoalSideH"]
+size = Vector2(80, 20)
+
+[sub_resource type="RectangleShape2D" id="GoalAreaShape"]
+size = Vector2(60, 200)
+
+[sub_resource type="LabelSettings" id="ScoreSettings"]
+font_size = 64
+
+[node name="Pitch" type="Node2D"]
+script = ExtResource("1_pitch")
+
+[node name="Field" type="Polygon2D" parent="."]
+color = Color(0.247, 0.420, 0.196, 1)
+polygon = PackedVector2Array(-870, -440, 870, -440, 870, 440, -870, 440)
+
+[node name="FieldStripes" type="Node2D" parent="."]
+
+[node name="Stripe1" type="Polygon2D" parent="FieldStripes"]
+color = Color(0.345, 0.510, 0.243, 1)
+polygon = PackedVector2Array(-800, -300, 800, -300, 800, -200, -800, -200)
+
+[node name="Stripe2" type="Polygon2D" parent="FieldStripes"]
+color = Color(0.345, 0.510, 0.243, 1)
+polygon = PackedVector2Array(-800, -100, 800, -100, 800, 0, -800, 0)
+
+[node name="Stripe3" type="Polygon2D" parent="FieldStripes"]
+color = Color(0.345, 0.510, 0.243, 1)
+polygon = PackedVector2Array(-800, 100, 800, 100, 800, 200, -800, 200)
+
+[node name="Stripe4" type="Polygon2D" parent="FieldStripes"]
+color = Color(0.345, 0.510, 0.243, 1)
+polygon = PackedVector2Array(-800, 300, 800, 300, 800, 400, -800, 400)
+
+[node name="Lines" type="Node2D" parent="."]
+
+[node name="Border" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-800, -400, 800, -400, 800, 400, -800, 400, -800, -400)
+width = 4.0
+default_color = Color(1, 1, 1, 0.78)
+
+[node name="MidLine" type="Line2D" parent="Lines"]
+points = PackedVector2Array(0, -400, 0, 400)
+width = 4.0
+default_color = Color(1, 1, 1, 0.78)
+
+[node name="CenterCircle" type="Line2D" parent="Lines"]
+points = PackedVector2Array(80, 0, 73.93, 30.62, 56.57, 56.57, 30.62, 73.93, 0, 80, -30.62, 73.93, -56.57, 56.57, -73.93, 30.62, -80, 0, -73.93, -30.62, -56.57, -56.57, -30.62, -73.93, 0, -80, 30.62, -73.93, 56.57, -56.57, 73.93, -30.62, 80, 0)
+width = 4.0
+default_color = Color(1, 1, 1, 0.78)
+
+[node name="CenterDot" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 0.85)
+polygon = PackedVector2Array(7, 0, 4.95, 4.95, 0, 7, -4.95, 4.95, -7, 0, -4.95, -4.95, 0, -7, 4.95, -4.95)
+
+[node name="GoalAreaLeft" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-800, -220, -664, -220, -664, 220, -800, 220)
+width = 4.0
+default_color = Color(1, 1, 1, 0.6)
+
+[node name="GoalAreaRight" type="Line2D" parent="Lines"]
+points = PackedVector2Array(800, -220, 664, -220, 664, 220, 800, 220)
+width = 4.0
+default_color = Color(1, 1, 1, 0.6)
+
+[node name="SixYardLeft" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-800, -100, -740, -100, -740, 100, -800, 100)
+width = 4.0
+default_color = Color(1, 1, 1, 0.6)
+
+[node name="SixYardRight" type="Line2D" parent="Lines"]
+points = PackedVector2Array(800, -100, 740, -100, 740, 100, 800, 100)
+width = 4.0
+default_color = Color(1, 1, 1, 0.6)
+
+[node name="PenaltyArcLeft" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-664, -57.13, -651.31, -45.96, -641.69, -30.62, -641.69, -15.51, -640, 0, -641.69, 15.51, -641.69, 30.62, -651.31, 45.96, -664, 57.13)
+width = 4.0
+default_color = Color(1, 1, 1, 0.6)
+
+[node name="PenaltyArcRight" type="Line2D" parent="Lines"]
+points = PackedVector2Array(664, -57.13, 651.31, -45.96, 641.69, -30.62, 641.69, -15.51, 640, 0, 641.69, 15.51, 641.69, 30.62, 651.31, 45.96, 664, 57.13)
+width = 4.0
+default_color = Color(1, 1, 1, 0.6)
+
+[node name="PenaltySpotLeft" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 0.85)
+polygon = PackedVector2Array(-716, 0, -717.17, 2.83, -720, 4, -722.83, 2.83, -724, 0, -722.83, -2.83, -720, -4, -717.17, -2.83)
+
+[node name="PenaltySpotRight" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 0.85)
+polygon = PackedVector2Array(724, 0, 722.83, 2.83, 720, 4, 717.17, 2.83, 716, 0, 717.17, -2.83, 720, -4, 722.83, -2.83)
+
+[node name="CornerArcLT" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-776, -400, -777.83, -390.81, -783.03, -383.03, -790.81, -377.83, -800, -376)
+width = 4.0
+default_color = Color(1, 1, 1, 0.85)
+
+[node name="CornerArcRT" type="Line2D" parent="Lines"]
+points = PackedVector2Array(800, -376, 790.81, -377.83, 783.03, -383.03, 777.83, -390.81, 776, -400)
+width = 4.0
+default_color = Color(1, 1, 1, 0.85)
+
+[node name="CornerArcLB" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-800, 376, -790.81, 377.83, -783.03, 383.03, -777.83, 390.81, -776, 400)
+width = 4.0
+default_color = Color(1, 1, 1, 0.85)
+
+[node name="CornerArcRB" type="Line2D" parent="Lines"]
+points = PackedVector2Array(776, 400, 777.83, 390.81, 783.03, 383.03, 790.81, 377.83, 800, 376)
+width = 4.0
+default_color = Color(1, 1, 1, 0.85)
+
+[node name="GoalNetLeft" type="Polygon2D" parent="Lines"]
+color = Color(0.247, 0.420, 0.196, 1)
+polygon = PackedVector2Array(-878, -108, -800, -108, -800, 108, -878, 108)
+
+[node name="GoalNetRight" type="Polygon2D" parent="Lines"]
+color = Color(0.247, 0.420, 0.196, 1)
+polygon = PackedVector2Array(878, -108, 800, -108, 800, 108, 878, 108)
+
+[node name="NetGridLh1" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-878, -72, -800, -72)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLh2" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-878, -36, -800, -36)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLh3" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-878, 0, -800, 0)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLh4" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-878, 36, -800, 36)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLh5" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-878, 72, -800, 72)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLv1" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-865, -108, -865, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLv2" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-852, -108, -852, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLv3" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-839, -108, -839, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLv4" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-826, -108, -826, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridLv5" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-813, -108, -813, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRh1" type="Line2D" parent="Lines"]
+points = PackedVector2Array(878, -72, 800, -72)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRh2" type="Line2D" parent="Lines"]
+points = PackedVector2Array(878, -36, 800, -36)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRh3" type="Line2D" parent="Lines"]
+points = PackedVector2Array(878, 0, 800, 0)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRh4" type="Line2D" parent="Lines"]
+points = PackedVector2Array(878, 36, 800, 36)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRh5" type="Line2D" parent="Lines"]
+points = PackedVector2Array(878, 72, 800, 72)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRv1" type="Line2D" parent="Lines"]
+points = PackedVector2Array(813, -108, 813, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRv2" type="Line2D" parent="Lines"]
+points = PackedVector2Array(826, -108, 826, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRv3" type="Line2D" parent="Lines"]
+points = PackedVector2Array(839, -108, 839, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRv4" type="Line2D" parent="Lines"]
+points = PackedVector2Array(852, -108, 852, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="NetGridRv5" type="Line2D" parent="Lines"]
+points = PackedVector2Array(865, -108, 865, 108)
+width = 1.0
+default_color = Color(0.78, 0.80, 0.83, 1)
+
+[node name="GoalFrameLeft" type="Line2D" parent="Lines"]
+points = PackedVector2Array(-800, -110, -880, -110, -880, 110, -800, 110)
+width = 6.0
+default_color = Color(1, 1, 1, 1)
+
+[node name="GoalFrameRight" type="Line2D" parent="Lines"]
+points = PackedVector2Array(800, -110, 880, -110, 880, 110, 800, 110)
+width = 6.0
+default_color = Color(1, 1, 1, 1)
+
+[node name="GoalPostLeftTop" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-810, -120, -790, -120, -790, -100, -810, -100)
+
+[node name="GoalPostLeftBottom" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-810, 120, -790, 120, -790, 100, -810, 100)
+
+[node name="GoalPostRightTop" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(810, -120, 790, -120, 790, -100, 810, -100)
+
+[node name="GoalPostRightBottom" type="Polygon2D" parent="Lines"]
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(810, 120, 790, 120, 790, 100, 810, 100)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, -410)
+shape = SubResource("WallH")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, 410)
+shape = SubResource("WallH")
+
+[node name="LeftTop" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-810, -255)
+shape = SubResource("WallVTop")
+
+[node name="LeftBottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-810, 255)
+shape = SubResource("WallVTop")
+
+[node name="RightTop" type="CollisionShape2D" parent="Walls"]
+position = Vector2(810, -255)
+shape = SubResource("WallVTop")
+
+[node name="RightBottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(810, 255)
+shape = SubResource("WallVTop")
+
+[node name="GoalBackLeft" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-880, 0)
+shape = SubResource("GoalBack")
+
+[node name="GoalBackRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(880, 0)
+shape = SubResource("GoalBack")
+
+[node name="GoalCeilingLeft" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-840, -110)
+shape = SubResource("GoalSideH")
+
+[node name="GoalFloorLeft" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-840, 110)
+shape = SubResource("GoalSideH")
+
+[node name="GoalCeilingRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(840, -110)
+shape = SubResource("GoalSideH")
+
+[node name="GoalFloorRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(840, 110)
+shape = SubResource("GoalSideH")
+
+[node name="WallVisual" type="Node2D" parent="."]
+
+[node name="WallTopV" type="Polygon2D" parent="WallVisual"]
+color = Color(0.247, 0.420, 0.196, 1)
+polygon = PackedVector2Array(-840, -420, 840, -420, 840, -400, -840, -400)
+
+[node name="WallBottomV" type="Polygon2D" parent="WallVisual"]
+color = Color(0.247, 0.420, 0.196, 1)
+polygon = PackedVector2Array(-840, 400, 840, 400, 840, 420, -840, 420)
+
+[node name="GoalLeftArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+position = Vector2(-840, 0)
+
+[node name="Shape" type="CollisionShape2D" parent="GoalLeftArea"]
+shape = SubResource("GoalAreaShape")
+
+[node name="GoalRightArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+position = Vector2(840, 0)
+
+[node name="Shape" type="CollisionShape2D" parent="GoalRightArea"]
+shape = SubResource("GoalAreaShape")
+
+[node name="CenterMarker" type="Node2D" parent="."]

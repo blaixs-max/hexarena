@@ -1,0 +1,39 @@
+# Godot 4+ ignore
+.godot/
+.import/
+
+# Mono-specific (n/a but keep)
+.mono/
+data_*/
+mono_crash.*.json
+
+# Editor temp
+*.tmp
+*.translation
+
+# Build outputs
+build/
+dist/
+exports/
+*.pck
+*.zip
+
+# Stitch references (sadece local)
+temp_stitch/
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Local secrets
+.env
+*.local
+
+# Claude Code local settings
+.claude/

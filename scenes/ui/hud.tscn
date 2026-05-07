@@ -1,0 +1,472 @@
+[gd_scene load_steps=18 format=3 uid="uid://bha1hd001"]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://bha1vj001" path="res://scenes/ui/virtual_joystick.tscn" id="2_joy"]
+[ext_resource type="Script" path="res://scripts/components/kick_button.gd" id="3_kick"]
+[ext_resource type="Script" path="res://scripts/components/sprint_button.gd" id="4_sprint"]
+
+[sub_resource type="StyleBoxFlat" id="SB_sb_dark"]
+bg_color = Color(0.055, 0.090, 0.137, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.42, 0.36, 0.95)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="SB_sb_timer"]
+bg_color = Color(0.039, 0.067, 0.094, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.243, 0.969, 0.627, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+shadow_color = Color(0.243, 0.969, 0.627, 0.4)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="SB_sb_red_score"]
+bg_color = Color(0.420, 0.110, 0.122, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.745, 0.196, 0.220, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+
+[sub_resource type="StyleBoxFlat" id="SB_sb_blue_score"]
+bg_color = Color(0.082, 0.169, 0.376, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.196, 0.435, 0.804, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+
+[sub_resource type="StyleBoxFlat" id="SB_stamina_bg"]
+bg_color = Color(0.055, 0.090, 0.137, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.18, 0.42, 0.36, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="SB_bar_bg"]
+bg_color = Color(0.02, 0.04, 0.07, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+
+[sub_resource type="StyleBoxFlat" id="SB_bar_fg"]
+bg_color = Color(0.243, 0.969, 0.627, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+
+[sub_resource type="StyleBoxFlat" id="SB_go_panel"]
+bg_color = Color(0.039, 0.067, 0.094, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.243, 0.969, 0.627, 0.9)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_left = 24
+corner_radius_bottom_right = 24
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="SB_go_btn_primary"]
+bg_color = Color(0.910, 0.451, 0.122, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_left = 18
+corner_radius_bottom_right = 18
+
+[sub_resource type="StyleBoxFlat" id="SB_go_btn_primary_hover"]
+bg_color = Color(1, 0.55, 0.18, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_left = 18
+corner_radius_bottom_right = 18
+
+[sub_resource type="StyleBoxFlat" id="SB_go_btn_secondary"]
+bg_color = Color(0.082, 0.118, 0.176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.30, 0.42, 0.55, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_left = 18
+corner_radius_bottom_right = 18
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Flash" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="EdgeLeft" type="ColorRect" parent="."]
+anchor_bottom = 1.0
+offset_right = 80.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="EdgeRight" type="ColorRect" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Top" type="Control" parent="."]
+anchor_right = 1.0
+offset_top = 14.0
+offset_bottom = 110.0
+mouse_filter = 2
+
+[node name="Scoreboard" type="HBoxContainer" parent="Top"]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -480.0
+offset_right = 480.0
+offset_bottom = 86.0
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="LogoLeft" type="Control" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(86, 86)
+
+[node name="HexBg" type="Polygon2D" parent="Top/Scoreboard/LogoLeft"]
+position = Vector2(43, 43)
+color = Color(0.420, 0.110, 0.122, 1)
+polygon = PackedVector2Array(38, 0, 19, 32.91, -19, 32.91, -38, 0, -19, -32.91, 19, -32.91)
+
+[node name="HexBorder" type="Line2D" parent="Top/Scoreboard/LogoLeft"]
+position = Vector2(43, 43)
+points = PackedVector2Array(38, 0, 19, 32.91, -19, 32.91, -38, 0, -19, -32.91, 19, -32.91, 38, 0)
+width = 3.0
+default_color = Color(0.745, 0.196, 0.220, 1)
+
+[node name="LogoText" type="Label" parent="Top/Scoreboard/LogoLeft"]
+offset_right = 86.0
+offset_bottom = 86.0
+text = "R"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 0.85, 0.85, 1)
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_font_sizes/font_size = 44
+
+[node name="HomeNamePill" type="PanelContainer" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(112, 60)
+theme_override_styles/panel = SubResource("SB_sb_dark")
+
+[node name="RedLabel" type="Label" parent="Top/Scoreboard/HomeNamePill"]
+text = "Red"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.910, 0.282, 0.282, 1)
+theme_override_font_sizes/font_size = 30
+
+[node name="HomeScorePill" type="PanelContainer" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(70, 60)
+theme_override_styles/panel = SubResource("SB_sb_red_score")
+
+[node name="HomeScore" type="Label" parent="Top/Scoreboard/HomeScorePill"]
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+
+[node name="TimerBox" type="PanelContainer" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(160, 70)
+theme_override_styles/panel = SubResource("SB_sb_timer")
+
+[node name="TimeLabel" type="Label" parent="Top/Scoreboard/TimerBox"]
+text = "3:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.243, 0.969, 0.627, 1)
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0.0, 0.30, 0.18, 0.85)
+theme_override_font_sizes/font_size = 38
+
+[node name="AwayScorePill" type="PanelContainer" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(70, 60)
+theme_override_styles/panel = SubResource("SB_sb_blue_score")
+
+[node name="AwayScore" type="Label" parent="Top/Scoreboard/AwayScorePill"]
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+
+[node name="AwayNamePill" type="PanelContainer" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(112, 60)
+theme_override_styles/panel = SubResource("SB_sb_dark")
+
+[node name="BlueLabel" type="Label" parent="Top/Scoreboard/AwayNamePill"]
+text = "Blue"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.306, 0.639, 1, 1)
+theme_override_font_sizes/font_size = 30
+
+[node name="LogoRight" type="Control" parent="Top/Scoreboard"]
+custom_minimum_size = Vector2(86, 86)
+
+[node name="HexBg" type="Polygon2D" parent="Top/Scoreboard/LogoRight"]
+position = Vector2(43, 43)
+color = Color(0.082, 0.169, 0.376, 1)
+polygon = PackedVector2Array(38, 0, 19, 32.91, -19, 32.91, -38, 0, -19, -32.91, 19, -32.91)
+
+[node name="HexBorder" type="Line2D" parent="Top/Scoreboard/LogoRight"]
+position = Vector2(43, 43)
+points = PackedVector2Array(38, 0, 19, 32.91, -19, 32.91, -38, 0, -19, -32.91, 19, -32.91, 38, 0)
+width = 3.0
+default_color = Color(0.196, 0.435, 0.804, 1)
+
+[node name="LogoText" type="Label" parent="Top/Scoreboard/LogoRight"]
+offset_right = 86.0
+offset_bottom = 86.0
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_font_sizes/font_size = 44
+
+[node name="StaminaPanel" type="PanelContainer" parent="."]
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 342.0
+offset_bottom = 92.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("SB_stamina_bg")
+
+[node name="VBox" type="VBoxContainer" parent="StaminaPanel"]
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="StaminaPanel/VBox"]
+text = "STAMINA 100%"
+theme_override_colors/font_color = Color(0.243, 0.969, 0.627, 0.95)
+theme_override_font_sizes/font_size = 14
+
+[node name="Bar" type="ProgressBar" parent="StaminaPanel/VBox"]
+custom_minimum_size = Vector2(0, 14)
+mouse_filter = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("SB_bar_bg")
+theme_override_styles/fill = SubResource("SB_bar_fg")
+
+[node name="CenterMsgShadow" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -434.0
+offset_top = -114.0
+offset_right = 446.0
+offset_bottom = 126.0
+mouse_filter = 2
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0, 0, 0, 0.7)
+theme_override_constants/outline_size = 14
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.7)
+theme_override_font_sizes/font_size = 96
+
+[node name="CenterMsg" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -440.0
+offset_top = -120.0
+offset_right = 440.0
+offset_bottom = 120.0
+mouse_filter = 2
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_font_sizes/font_size = 96
+
+[node name="GameOverPanel" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+mouse_filter = 1
+
+[node name="Dim" type="ColorRect" parent="GameOverPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.7)
+
+[node name="Center" type="CenterContainer" parent="GameOverPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="GameOverPanel/Center"]
+custom_minimum_size = Vector2(680, 460)
+theme_override_styles/panel = SubResource("SB_go_panel")
+
+[node name="VBox" type="VBoxContainer" parent="GameOverPanel/Center/Panel"]
+offset_left = 36.0
+offset_top = 36.0
+offset_right = -36.0
+offset_bottom = -36.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="GameOverPanel/Center/Panel/VBox"]
+text = "MAÇ BİTTİ"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.243, 0.969, 0.627, 1)
+theme_override_font_sizes/font_size = 56
+
+[node name="ResultLabel" type="Label" parent="GameOverPanel/Center/Panel/VBox"]
+text = "HOME WINS!"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.92, 0.41, 0.18, 1)
+theme_override_constants/outline_size = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_font_sizes/font_size = 72
+
+[node name="ScoreLabel" type="Label" parent="GameOverPanel/Center/Panel/VBox"]
+text = "0 - 0"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 48
+
+[node name="Buttons" type="HBoxContainer" parent="GameOverPanel/Center/Panel/VBox"]
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Rematch" type="Button" parent="GameOverPanel/Center/Panel/VBox/Buttons"]
+custom_minimum_size = Vector2(240, 70)
+text = "TEKRAR OYNA"
+theme_override_styles/normal = SubResource("SB_go_btn_primary")
+theme_override_styles/hover = SubResource("SB_go_btn_primary_hover")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 26
+
+[node name="Menu" type="Button" parent="GameOverPanel/Center/Panel/VBox/Buttons"]
+custom_minimum_size = Vector2(240, 70)
+text = "ANA MENÜ"
+theme_override_styles/normal = SubResource("SB_go_btn_secondary")
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 26
+
+[node name="Joystick" parent="." instance=ExtResource("2_joy")]
+
+[node name="RightCluster" type="Control" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -550.0
+offset_top = -550.0
+offset_right = -10.0
+offset_bottom = -10.0
+mouse_filter = 2
+
+[node name="HexFrameOuter" type="Polygon2D" parent="RightCluster"]
+position = Vector2(270, 270)
+color = Color(0.05, 0.08, 0.12, 0.22)
+polygon = PackedVector2Array(250, 0, 125, 216.51, -125, 216.51, -250, 0, -125, -216.51, 125, -216.51)
+
+[node name="HexFrameBorder" type="Line2D" parent="RightCluster"]
+position = Vector2(270, 270)
+points = PackedVector2Array(250, 0, 125, 216.51, -125, 216.51, -250, 0, -125, -216.51, 125, -216.51, 250, 0)
+width = 5.0
+default_color = Color(1, 1, 1, 0.78)
+
+[node name="HexFrameInnerGlow" type="Line2D" parent="RightCluster"]
+position = Vector2(270, 270)
+points = PackedVector2Array(232, 0, 116, 200.92, -116, 200.92, -232, 0, -116, -200.92, 116, -200.92, 232, 0)
+width = 2.0
+default_color = Color(1, 1, 1, 0.22)
+
+[node name="SprintButton" type="Control" parent="RightCluster"]
+offset_left = 170.0
+offset_top = 70.0
+offset_right = 370.0
+offset_bottom = 270.0
+mouse_filter = 1
+script = ExtResource("4_sprint")
+icon_color = Color(1, 1, 1, 0.95)
+label_text = "SPRINT"
+label_color = Color(1, 1, 1, 0.95)
+minimal_mode = true
+
+[node name="PowerKickButton" type="Control" parent="RightCluster"]
+offset_left = 280.0
+offset_top = 280.0
+offset_right = 480.0
+offset_bottom = 480.0
+mouse_filter = 1
+script = ExtResource("3_kick")
+label_text = "PASS"
+minimal_mode = true
+icon_kind = "arrow"
+icon_color = Color(1, 1, 1, 0.95)
+label_color = Color(1, 1, 1, 0.95)
+instant = false
+min_kick_power = 0.55
+
+[node name="KickButton" type="Control" parent="RightCluster"]
+offset_left = 60.0
+offset_top = 280.0
+offset_right = 260.0
+offset_bottom = 480.0
+mouse_filter = 1
+script = ExtResource("3_kick")
+label_text = "SHOOT"
+minimal_mode = true
+icon_kind = "ball_foot"
+icon_color = Color(1, 1, 1, 0.95)
+label_color = Color(1, 1, 1, 0.95)
+instant = true
+fixed_power = 0.45

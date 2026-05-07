@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://bha1gb001"]
+
+[ext_resource type="Script" path="res://scenes/fx/goal_burst.gd" id="1_gb"]
+
+[sub_resource type="Gradient" id="Gradient_1"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.85, 0.2, 1, 1, 0.5, 0.2, 0)
+
+[node name="GoalBurst" type="Node2D"]
+script = ExtResource("1_gb")
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+amount = 80
+lifetime = 1.4
+one_shot = true
+explosiveness = 0.85
+spread = 180.0
+gravity = Vector2(0, 380)
+initial_velocity_min = 280.0
+initial_velocity_max = 620.0
+angular_velocity_min = -260.0
+angular_velocity_max = 260.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color_ramp = SubResource("Gradient_1")

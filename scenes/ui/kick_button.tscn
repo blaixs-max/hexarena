@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bha1kb001"]
+
+[ext_resource type="Script" path="res://scripts/components/kick_button.gd" id="1_kb"]
+
+[node name="KickButton" type="Control"]
+custom_minimum_size = Vector2(180, 180)
+size = Vector2(180, 180)
+mouse_filter = 1
+script = ExtResource("1_kb")
