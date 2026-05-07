@@ -277,29 +277,6 @@ body {
 			<h1 class="fs-title">HEXARENA</h1>
 			<p class="fs-subtitle">3 vs 3 hızlı tempo futbol</p>
 			<button id="fs-button" type="button">▶  TAM EKRAN MODUNA GEÇ</button>
-			<button id="fs-skip" type="button">Tarayıcıda devam et</button>
-		</div>
-
-		<div id="ios-modal" class="ios-modal-hidden">
-			<div class="ios-modal-card">
-				<div class="ios-modal-icon">📱</div>
-				<h2>iPhone Safari Kısıtlı</h2>
-				<p class="ios-modal-text">
-					iPhone Safari tam ekran modunu desteklemez.<br>
-					HexArena'yı tam ekran oynamak için <b>Ana Ekrana Ekle</b>:
-				</p>
-				<ol class="ios-steps">
-					<li>Alttaki <b>Paylaş</b> ikonuna 📤 tıkla</li>
-					<li>Listeden <b>"Ana Ekrana Ekle"</b> seç</li>
-					<li>Sağ üstte <b>"Ekle"</b> tıkla</li>
-					<li>Ana ekrandan <b>HexArena</b> ikonuna tıkla</li>
-					<li>🎮 <b>Tam ekran açılır</b></li>
-				</ol>
-				<p class="ios-warn">
-					⚠️ <b>Önemli</b>: Safari'deki bu sekmeyi kapatın, sonra ana ekrandaki ikondan açın.
-				</p>
-				<button id="ios-modal-close" type="button">Tamam, Anladım</button>
-			</div>
 		</div>
 
 		<canvas id="canvas">
@@ -322,24 +299,30 @@ body {
 (function setupFullscreenOverlay() {
 	const overlay = document.getElementById('fs-overlay');
 	const fsBtn = document.getElementById('fs-button');
-	const fsSkip = document.getElementById('fs-skip');
-	const iosModal = document.getElementById('ios-modal');
-	const iosModalClose = document.getElementById('ios-modal-close');
 
-	const ua = navigator.userAgent;
-	const isIPhone = /iPhone|iPod/.test(ua) && !window.MSStream;
-	const isIPad = /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 	const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
 
-	// PWA standalone modunda overlay gerekmez
+	// PWA standalone modunda overlay gerekmez (zaten tam ekran)
 	if (isStandalone) {
 		overlay.remove();
+		applyFullscreenCSS();
 		return;
 	}
 
-	// iPhone Safari: fullscreen API yok → buton metnini değiştir
-	if (isIPhone) {
-		fsBtn.textContent = '📱  ANA EKRANA EKLE';
+	function applyFullscreenCSS() {
+		// Body'i tam ekran sabit kapla — iOS scroll trick için kritik
+		document.documentElement.style.height = '100%';
+		document.body.style.position = 'fixed';
+		document.body.style.top = '0';
+		document.body.style.left = '0';
+		document.body.style.right = '0';
+		document.body.style.bottom = '0';
+		document.body.style.width = '100vw';
+		document.body.style.height = '100vh';
+		document.body.style.overflow = 'hidden';
+		document.body.style.margin = '0';
+		// iOS Safari URL bar gizleme tetiklemesi
+		setTimeout(() => window.scrollTo(0, 1), 100);
 	}
 
 	function closeOverlay() {
@@ -349,42 +332,36 @@ body {
 
 	async function tryEnterFullscreen() {
 		const elem = document.documentElement;
+		// Standart Fullscreen API
 		try {
 			if (elem.requestFullscreen) {
 				await elem.requestFullscreen({ navigationUI: 'hide' });
 			} else if (elem.webkitRequestFullscreen) {
-				elem.webkitRequestFullscreen();
+				elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 			} else if (elem.msRequestFullscreen) {
 				elem.msRequestFullscreen();
 			}
 		} catch (err) {
-			console.warn('Fullscreen request failed:', err);
+			console.warn('Fullscreen API failed:', err);
 		}
+		// Pseudo-fullscreen CSS (iOS Safari için kritik, diğer platformlarda zarar vermez)
+		applyFullscreenCSS();
+		// Landscape orientation lock (mobil)
 		try {
 			if (screen.orientation && typeof screen.orientation.lock === 'function') {
 				await screen.orientation.lock('landscape').catch(() => {});
 			}
-		} catch (e) { /* iOS reddedebilir */ }
+		} catch (e) { /* iOS reddedebilir, sorun değil */ }
 	}
 
 	fsBtn.addEventListener('click', async () => {
-		if (isIPhone) {
-			// iPhone: modal göster, manuel rehberlik et
-			iosModal.classList.remove('ios-modal-hidden');
-		} else {
-			// Android, Desktop, iPad: gerçek fullscreen
-			await tryEnterFullscreen();
-			closeOverlay();
-		}
-	});
-
-	fsSkip.addEventListener('click', () => {
+		await tryEnterFullscreen();
 		closeOverlay();
 	});
 
-	iosModalClose.addEventListener('click', () => {
-		iosModal.classList.add('ios-modal-hidden');
-		closeOverlay();
+	// Sayfa scroll'a tepki: URL bar yine açılırsa, sayfayı kaydır = otomatik gizle
+	window.addEventListener('orientationchange', () => {
+		setTimeout(() => window.scrollTo(0, 1), 100);
 	});
 })();
 
