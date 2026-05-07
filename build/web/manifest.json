@@ -1,0 +1,25 @@
+{
+  "name": "HexArena",
+  "short_name": "HexArena",
+  "description": "3v3 hızlı tempo futbol",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0a1421",
+  "theme_color": "#0a1421",
+  "icons": [
+    {
+      "src": "index.icon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "index.apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
