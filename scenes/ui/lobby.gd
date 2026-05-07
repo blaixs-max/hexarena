@@ -77,10 +77,25 @@ func _ready() -> void:
 	Network.rooms_updated.connect(_refresh_room_list)
 	ip_field.text = "127.0.0.1"
 	manual_box.visible = false
+	# Web build'de LAN host etmek imkansız (UDP yok)
+	if Network.is_web_platform():
+		_apply_web_mode_ui()
 	if Network.is_online():
 		_set_state(State.LOBBY_ROOM)
 	else:
 		_set_state(State.MAIN)
+
+func _apply_web_mode_ui() -> void:
+	# Web build: ARKADAŞLA OYNA (LAN) çalışmaz — disable + açıklayıcı text
+	play_friends_btn.disabled = true
+	play_friends_btn.text = "ARKADAŞLA OYNA (LAN)  ·  Sadece native"
+	# ODA KUR (host) Web'de çalışmaz
+	host_btn.disabled = true
+	host_btn.text = "ODA KUR  ·  Native build gerekli"
+	# Manuel IP'yi göster — varsayılan ws bağlantı
+	manual_box.visible = true
+	manual_toggle.visible = false
+	ip_field.placeholder_text = "Sunucu IP veya ws:// URL"
 
 func _set_state(s: State) -> void:
 	state = s
@@ -100,6 +115,16 @@ func _on_quick_match() -> void:
 	get_tree().change_scene_to_file("res://scenes/match/match.tscn")
 
 func _on_online_server() -> void:
+	if Network.is_web_platform():
+		# Web build: Master server WebSocket URL ile bağlan
+		var url: String = Network.master_server_url
+		if Network.join_master_server(url):
+			connecting_status.text = "Master server'a bağlanılıyor...\n%s" % url
+			_set_state(State.CONNECTING)
+		else:
+			connecting_status.text = "Master server'a bağlanılamadı:\n%s" % url
+		return
+	# Native build: ENet ile public server'a bağlan
 	if Network.join_dedicated_server(Network.public_server_ip):
 		connecting_status.text = "Sunucuya bağlanılıyor: %s..." % Network.public_server_ip
 		_set_state(State.CONNECTING)
@@ -130,11 +155,20 @@ func _on_host() -> void:
 		join_status.text = "Host başarısız (port dolu olabilir)"
 
 func _on_join() -> void:
-	var ip: String = ip_field.text.strip_edges()
-	if ip == "":
-		ip = "127.0.0.1"
-	if Network.join_game(ip):
-		connecting_status.text = "Bağlanılıyor: %s..." % ip
+	var input: String = ip_field.text.strip_edges()
+	if input == "":
+		input = "127.0.0.1"
+	# Web build: kullanıcı tam URL girebilir (ws://… veya wss://…)
+	if Network.is_web_platform() and (input.begins_with("ws://") or input.begins_with("wss://")):
+		if Network.join_game_ws(input):
+			connecting_status.text = "Bağlanılıyor: %s..." % input
+			_set_state(State.CONNECTING)
+		else:
+			join_status.text = "WebSocket bağlantısı başarısız"
+		return
+	if Network.join_game(input):
+		var label: String = ("ws://%s:%d" % [input, Network.DEFAULT_PORT]) if Network.is_web_platform() else input
+		connecting_status.text = "Bağlanılıyor: %s..." % label
 		_set_state(State.CONNECTING)
 	else:
 		join_status.text = "Bağlantı başarısız"
