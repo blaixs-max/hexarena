@@ -14,7 +14,11 @@ const MAX_PLAYERS := 6
 const BROADCAST_INTERVAL := 1.0
 const ROOM_TIMEOUT := 3.5
 
+# Master server URL — Oracle Cloud deploy sonrası gerçek domain ile değişir
+const DEFAULT_MASTER_SERVER_URL := "ws://127.0.0.1:7777"
+
 enum Mode { OFFLINE, HOST, CLIENT }
+enum Transport { ENET, WEBSOCKET }
 
 class RoomInfo:
 	var room_id: String
@@ -28,12 +32,14 @@ class RoomInfo:
 	var last_seen: float
 
 var mode := Mode.OFFLINE
-var peer: ENetMultiplayerPeer = null
+var peer: MultiplayerPeer = null
+var transport := Transport.ENET
 var local_name := "Player"
 var connected_peers: Array[int] = []
 var is_dedicated := false
 var connecting_to_dedicated := false
 var public_server_ip := "127.0.0.1"
+var master_server_url := DEFAULT_MASTER_SERVER_URL
 
 var _broadcast_socket: PacketPeerUDP = null
 var _discovery_socket: PacketPeerUDP = null
@@ -43,13 +49,18 @@ var _own_broadcast_id := ""
 
 var discovered_rooms: Dictionary = {}
 
+func is_web_platform() -> bool:
+	return OS.has_feature("web")
+
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	start_discovery()
+	# Web build'de UDP broadcast desteklenmez — discovery atla
+	if not is_web_platform():
+		start_discovery()
 
 func _process(delta: float) -> void:
 	if mode == Mode.HOST and _broadcast_socket:
@@ -63,13 +74,17 @@ func _process(delta: float) -> void:
 		_cleanup_stale_rooms()
 
 func host_game(port: int = DEFAULT_PORT) -> bool:
+	if is_web_platform():
+		push_warning("[Net] Web build native server kuramaz; native build veya master server kullan.")
+		return false
 	_close_existing()
-	peer = ENetMultiplayerPeer.new()
-	var err: int = peer.create_server(port, MAX_PLAYERS)
+	var ep := ENetMultiplayerPeer.new()
+	var err: int = ep.create_server(port, MAX_PLAYERS)
 	if err != OK:
 		push_error("Host failed: %d" % err)
-		peer = null
 		return false
+	peer = ep
+	transport = Transport.ENET
 	multiplayer.multiplayer_peer = peer
 	mode = Mode.HOST
 	connected_peers = [1]
@@ -77,29 +92,75 @@ func host_game(port: int = DEFAULT_PORT) -> bool:
 	if not is_dedicated:
 		_open_broadcast_socket()
 	lobby_changed.emit()
-	print("[Net] Hosting on port %d (dedicated=%s)" % [port, is_dedicated])
+	print("[Net] Hosting on port %d (ENet, dedicated=%s)" % [port, is_dedicated])
 	return true
 
-func start_dedicated_server(port: int = DEFAULT_PORT) -> bool:
+# WebSocket server — Godot Dedicated Server'da ya da host build'de kullanılır
+func host_game_ws(port: int = DEFAULT_PORT) -> bool:
+	_close_existing()
+	var wp := WebSocketMultiplayerPeer.new()
+	var err: int = wp.create_server(port)
+	if err != OK:
+		push_error("WS host failed: %d" % err)
+		return false
+	peer = wp
+	transport = Transport.WEBSOCKET
+	multiplayer.multiplayer_peer = peer
+	mode = Mode.HOST
+	connected_peers = [1]
 	is_dedicated = true
+	lobby_changed.emit()
+	print("[Net] Hosting WebSocket on port %d" % port)
+	return true
+
+func start_dedicated_server(port: int = DEFAULT_PORT, use_websocket: bool = false) -> bool:
+	is_dedicated = true
+	if use_websocket:
+		return host_game_ws(port)
 	return host_game(port)
 
 func join_game(ip: String, port: int = DEFAULT_PORT) -> bool:
+	# Web build'de ENet yok; otomatik WebSocket'e fallback
+	if is_web_platform():
+		return join_game_ws("ws://%s:%d" % [ip, port])
 	_close_existing()
-	peer = ENetMultiplayerPeer.new()
-	var err: int = peer.create_client(ip, port)
+	var ep := ENetMultiplayerPeer.new()
+	var err: int = ep.create_client(ip, port)
 	if err != OK:
 		push_error("Join failed: %d" % err)
-		peer = null
 		return false
+	peer = ep
+	transport = Transport.ENET
 	multiplayer.multiplayer_peer = peer
 	mode = Mode.CLIENT
-	print("[Net] Connecting to %s:%d" % [ip, port])
+	print("[Net] Connecting (ENet) to %s:%d" % [ip, port])
+	return true
+
+# WebSocket client — Web build'de kullanıcı bunu çağırır (master server URL ile)
+func join_game_ws(url: String) -> bool:
+	_close_existing()
+	var wp := WebSocketMultiplayerPeer.new()
+	var err: int = wp.create_client(url)
+	if err != OK:
+		push_error("WS join failed: %d" % err)
+		return false
+	peer = wp
+	transport = Transport.WEBSOCKET
+	multiplayer.multiplayer_peer = peer
+	mode = Mode.CLIENT
+	print("[Net] Connecting (WS) to %s" % url)
 	return true
 
 func join_dedicated_server(ip: String, port: int = DEFAULT_PORT) -> bool:
 	connecting_to_dedicated = true
 	return join_game(ip, port)
+
+# Master server bağlantısı — Web build için
+func join_master_server(url: String = "") -> bool:
+	connecting_to_dedicated = true
+	if url.is_empty():
+		url = master_server_url
+	return join_game_ws(url)
 
 func leave() -> void:
 	_close_existing()

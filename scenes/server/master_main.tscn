@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bha1ms001"]
+
+[ext_resource type="Script" path="res://scripts/server/master_main.gd" id="1_msmain"]
+
+[node name="MasterMain" type="Node"]
+script = ExtResource("1_msmain")
