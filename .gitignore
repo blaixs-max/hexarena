@@ -11,11 +11,12 @@ mono_crash.*.json
 *.tmp
 *.translation
 
-# Build outputs
-build/
+# Build outputs (web/ commit edilir, diğerleri ignore)
+build/*
+!build/web/
+!build/web/**
 dist/
 exports/
-*.pck
 *.zip
 
 # Stitch references (sadece local)
