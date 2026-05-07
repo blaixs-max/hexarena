@@ -166,6 +166,107 @@ body {
 }
 
 .fs-hint.show { display: block; }
+
+#fs-skip {
+	margin-top: 1rem;
+	background: transparent;
+	border: 1px solid rgba(255,255,255,0.25);
+	color: rgba(255,255,255,0.55);
+	padding: 0.5rem 1.2rem;
+	font-size: 0.82rem;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: opacity 0.2s;
+}
+
+#fs-skip:hover { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.45); }
+
+#ios-modal {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.72);
+	backdrop-filter: blur(6px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	padding: 1rem;
+	transition: opacity 0.3s ease;
+}
+
+#ios-modal.ios-modal-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.ios-modal-card {
+	background: linear-gradient(180deg, #1a2530 0%, #0d1620 100%);
+	border: 2px solid rgba(255, 217, 90, 0.4);
+	border-radius: 18px;
+	padding: 1.6rem 1.4rem;
+	max-width: 380px;
+	width: 100%;
+	color: #fff;
+	box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+	font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.ios-modal-icon {
+	font-size: 2.8rem;
+	text-align: center;
+	margin-bottom: 0.5rem;
+}
+
+.ios-modal-card h2 {
+	margin: 0 0 0.6rem 0;
+	text-align: center;
+	font-size: 1.25rem;
+	color: #ffd95a;
+}
+
+.ios-modal-text {
+	font-size: 0.9rem;
+	line-height: 1.5;
+	margin: 0 0 1.2rem 0;
+	color: rgba(255,255,255,0.85);
+	text-align: center;
+}
+
+.ios-steps {
+	font-size: 0.88rem;
+	line-height: 1.7;
+	color: rgba(255,255,255,0.92);
+	margin: 0 0 1rem 0;
+	padding-left: 1.4rem;
+}
+
+.ios-steps li { margin-bottom: 0.3rem; }
+
+.ios-warn {
+	background: rgba(255, 158, 50, 0.12);
+	border-left: 3px solid #ff9e32;
+	padding: 0.7rem 0.9rem;
+	border-radius: 6px;
+	font-size: 0.82rem;
+	line-height: 1.4;
+	margin: 0 0 1.2rem 0;
+	color: rgba(255,255,255,0.9);
+}
+
+#ios-modal-close {
+	width: 100%;
+	background: linear-gradient(180deg, #f08c2a 0%, #c95f0e 100%);
+	border: 2px solid #ffb960;
+	color: #fff;
+	padding: 0.85rem;
+	font-size: 1rem;
+	font-weight: 700;
+	border-radius: 10px;
+	cursor: pointer;
+	box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+}
+
+#ios-modal-close:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.3); }
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
@@ -176,10 +277,29 @@ body {
 			<h1 class="fs-title">HEXARENA</h1>
 			<p class="fs-subtitle">3 vs 3 hızlı tempo futbol</p>
 			<button id="fs-button" type="button">▶  TAM EKRAN MODUNA GEÇ</button>
-			<p class="fs-hint" id="fs-hint-ios">
-				iPhone Safari tam ekran kısıtlıdır.<br>
-				En iyi deneyim için: <b>Paylaş → Ana Ekrana Ekle</b>
-			</p>
+			<button id="fs-skip" type="button">Tarayıcıda devam et</button>
+		</div>
+
+		<div id="ios-modal" class="ios-modal-hidden">
+			<div class="ios-modal-card">
+				<div class="ios-modal-icon">📱</div>
+				<h2>iPhone Safari Kısıtlı</h2>
+				<p class="ios-modal-text">
+					iPhone Safari tam ekran modunu desteklemez.<br>
+					HexArena'yı tam ekran oynamak için <b>Ana Ekrana Ekle</b>:
+				</p>
+				<ol class="ios-steps">
+					<li>Alttaki <b>Paylaş</b> ikonuna 📤 tıkla</li>
+					<li>Listeden <b>"Ana Ekrana Ekle"</b> seç</li>
+					<li>Sağ üstte <b>"Ekle"</b> tıkla</li>
+					<li>Ana ekrandan <b>HexArena</b> ikonuna tıkla</li>
+					<li>🎮 <b>Tam ekran açılır</b></li>
+				</ol>
+				<p class="ios-warn">
+					⚠️ <b>Önemli</b>: Safari'deki bu sekmeyi kapatın, sonra ana ekrandaki ikondan açın.
+				</p>
+				<button id="ios-modal-close" type="button">Tamam, Anladım</button>
+			</div>
 		</div>
 
 		<canvas id="canvas">
@@ -202,22 +322,29 @@ body {
 (function setupFullscreenOverlay() {
 	const overlay = document.getElementById('fs-overlay');
 	const fsBtn = document.getElementById('fs-button');
-	const iosHint = document.getElementById('fs-hint-ios');
+	const fsSkip = document.getElementById('fs-skip');
+	const iosModal = document.getElementById('ios-modal');
+	const iosModalClose = document.getElementById('ios-modal-close');
 
 	const ua = navigator.userAgent;
-	const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+	const isIPhone = /iPhone|iPod/.test(ua) && !window.MSStream;
+	const isIPad = /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 	const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
 
-	// PWA olarak açıldıysa overlay'e gerek yok
+	// PWA standalone modunda overlay gerekmez
 	if (isStandalone) {
-		overlay.classList.add('fade-out');
-		setTimeout(() => overlay.remove(), 50);
+		overlay.remove();
 		return;
 	}
 
-	// iOS'ta fullscreen API sınırlı; hint göster
-	if (isIOS) {
-		iosHint.classList.add('show');
+	// iPhone Safari: fullscreen API yok → buton metnini değiştir
+	if (isIPhone) {
+		fsBtn.textContent = '📱  ANA EKRANA EKLE';
+	}
+
+	function closeOverlay() {
+		overlay.classList.add('fade-out');
+		setTimeout(() => overlay.remove(), 450);
 	}
 
 	async function tryEnterFullscreen() {
@@ -233,7 +360,6 @@ body {
 		} catch (err) {
 			console.warn('Fullscreen request failed:', err);
 		}
-		// Landscape orientation lock (mobile)
 		try {
 			if (screen.orientation && typeof screen.orientation.lock === 'function') {
 				await screen.orientation.lock('landscape').catch(() => {});
@@ -242,9 +368,23 @@ body {
 	}
 
 	fsBtn.addEventListener('click', async () => {
-		await tryEnterFullscreen();
-		overlay.classList.add('fade-out');
-		setTimeout(() => overlay.remove(), 450);
+		if (isIPhone) {
+			// iPhone: modal göster, manuel rehberlik et
+			iosModal.classList.remove('ios-modal-hidden');
+		} else {
+			// Android, Desktop, iPad: gerçek fullscreen
+			await tryEnterFullscreen();
+			closeOverlay();
+		}
+	});
+
+	fsSkip.addEventListener('click', () => {
+		closeOverlay();
+	});
+
+	iosModalClose.addEventListener('click', () => {
+		iosModal.classList.add('ios-modal-hidden');
+		closeOverlay();
 	});
 })();
 
