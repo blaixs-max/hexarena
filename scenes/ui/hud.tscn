@@ -402,7 +402,7 @@ alignment = 1
 
 [node name="Rematch" type="Button" parent="GameOverPanel/Center/Panel/VBox/Buttons"]
 custom_minimum_size = Vector2(260, 78)
-text = "▶  TEKRAR OYNA"
+text = "TEKRAR OYNA"
 theme_override_styles/normal = SubResource("SB_go_btn_primary")
 theme_override_styles/hover = SubResource("SB_go_btn_primary_hover")
 theme_override_colors/font_color = Color(1, 1, 1, 1)

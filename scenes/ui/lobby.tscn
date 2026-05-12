@@ -206,7 +206,7 @@ theme_override_constants/separation = 14
 
 [node name="QuickMatch" type="Button" parent="Panels/MainPanel/VBox"]
 custom_minimum_size = Vector2(0, 78)
-text = "▶  HIZLI MAÇ"
+text = "HIZLI MAÇ"
 theme_override_styles/normal = SubResource("SB_primary")
 theme_override_styles/hover = SubResource("SB_primary_hover")
 theme_override_styles/pressed = SubResource("SB_primary_pressed")
@@ -217,7 +217,7 @@ theme_override_font_sizes/font_size = 32
 
 [node name="Multiplayer" type="Button" parent="Panels/MainPanel/VBox"]
 custom_minimum_size = Vector2(0, 72)
-text = "👥  ÇOKLU OYUNCU"
+text = "ÇOKLU OYUNCU"
 theme_override_styles/normal = SubResource("SB_secondary")
 theme_override_styles/hover = SubResource("SB_secondary_hover")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -227,7 +227,7 @@ theme_override_font_sizes/font_size = 28
 
 [node name="Profile" type="Button" parent="Panels/MainPanel/VBox"]
 custom_minimum_size = Vector2(0, 66)
-text = "👤  PROFİL   ·   YAKINDA"
+text = "PROFİL   ·   YAKINDA"
 disabled = true
 theme_override_styles/disabled = SubResource("SB_disabled")
 theme_override_colors/font_disabled_color = Color(0.62, 0.66, 0.74, 0.85)
@@ -235,7 +235,7 @@ theme_override_font_sizes/font_size = 23
 
 [node name="Settings" type="Button" parent="Panels/MainPanel/VBox"]
 custom_minimum_size = Vector2(0, 66)
-text = "⚙  AYARLAR   ·   YAKINDA"
+text = "AYARLAR   ·   YAKINDA"
 disabled = true
 theme_override_styles/disabled = SubResource("SB_disabled")
 theme_override_colors/font_disabled_color = Color(0.62, 0.66, 0.74, 0.85)
@@ -270,7 +270,7 @@ theme_override_font_sizes/font_size = 38
 
 [node name="OnlineServer" type="Button" parent="Panels/MPPanel/VBox"]
 custom_minimum_size = Vector2(0, 78)
-text = "🌐  ONLINE SUNUCU"
+text = "ONLINE SUNUCU"
 theme_override_styles/normal = SubResource("SB_primary")
 theme_override_styles/hover = SubResource("SB_primary_hover")
 theme_override_styles/pressed = SubResource("SB_primary_pressed")
@@ -279,7 +279,7 @@ theme_override_font_sizes/font_size = 28
 
 [node name="PlayFriends" type="Button" parent="Panels/MPPanel/VBox"]
 custom_minimum_size = Vector2(0, 72)
-text = "👥  ARKADAŞLA OYNA  ·  LAN"
+text = "ARKADAŞLA OYNA  ·  LAN"
 theme_override_styles/normal = SubResource("SB_secondary")
 theme_override_styles/hover = SubResource("SB_secondary_hover")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -287,7 +287,7 @@ theme_override_font_sizes/font_size = 24
 
 [node name="QuickMatchMP" type="Button" parent="Panels/MPPanel/VBox"]
 custom_minimum_size = Vector2(0, 66)
-text = "⚡  HIZLI EŞLEŞ   ·   YAKINDA"
+text = "HIZLI EŞLEŞ   ·   YAKINDA"
 disabled = true
 theme_override_styles/disabled = SubResource("SB_disabled")
 theme_override_colors/font_disabled_color = Color(0.62, 0.66, 0.74, 0.85)
@@ -295,7 +295,7 @@ theme_override_font_sizes/font_size = 22
 
 [node name="CustomMatch" type="Button" parent="Panels/MPPanel/VBox"]
 custom_minimum_size = Vector2(0, 66)
-text = "🛡  ÖZEL MAÇ   ·   YAKINDA"
+text = "ÖZEL MAÇ   ·   YAKINDA"
 disabled = true
 theme_override_styles/disabled = SubResource("SB_disabled")
 theme_override_colors/font_disabled_color = Color(0.62, 0.66, 0.74, 0.85)
@@ -330,7 +330,7 @@ theme_override_font_sizes/font_size = 34
 
 [node name="HostRoom" type="Button" parent="Panels/JoinPanel/VBox"]
 custom_minimum_size = Vector2(0, 68)
-text = "🏠  ODA KUR  ·  Sen Host"
+text = "ODA KUR  ·  Sen Host"
 theme_override_styles/normal = SubResource("SB_primary")
 theme_override_styles/hover = SubResource("SB_primary_hover")
 theme_override_styles/pressed = SubResource("SB_primary_pressed")
@@ -478,7 +478,7 @@ theme_override_font_sizes/font_size = 22
 
 [node name="StartMatch" type="Button" parent="Panels/RoomPanel/Inner/Actions"]
 custom_minimum_size = Vector2(380, 66)
-text = "▶  MAÇI BAŞLAT"
+text = "MAÇI BAŞLAT"
 theme_override_styles/normal = SubResource("SB_primary")
 theme_override_styles/hover = SubResource("SB_primary_hover")
 theme_override_styles/pressed = SubResource("SB_primary_pressed")

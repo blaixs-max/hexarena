@@ -2,16 +2,8 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-		<meta name="apple-mobile-web-app-title" content="HexArena">
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta name="theme-color" content="#0a1421">
-		<meta name="screen-orientation" content="landscape">
-		<meta name="x5-orientation" content="landscape">
-		<link rel="manifest" href="manifest.json">
-		<title>HexArena - 3v3 Soccer</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>Haxball Clone</title>
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -97,75 +89,12 @@ body {
 	text-align: center;
 	z-index: 1;
 }
-
-#fs-overlay {
-	position: fixed;
-	inset: 0;
-	background: radial-gradient(circle at 50% 35%, #0e3a23 0%, #0a1620 70%, #050a10 100%);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	z-index: 9999;
-	font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-	color: #fff;
-	transition: opacity 0.4s ease;
-}
-
-#fs-overlay.fade-out { opacity: 0; pointer-events: none; }
-
-.fs-title {
-	font-size: clamp(2.4rem, 8vw, 5rem);
-	font-weight: 900;
-	letter-spacing: 0.08em;
-	margin: 0 0 0.4rem 0;
-	background: linear-gradient(180deg, #ffd95a 0%, #c08720 100%);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 6px 20px rgba(217, 179, 67, 0.35);
-	filter: drop-shadow(0 2px 0 rgba(0,0,0,0.4));
-}
-
-.fs-subtitle {
-	font-size: clamp(0.85rem, 2vw, 1.05rem);
-	color: rgba(255, 255, 255, 0.75);
-	margin: 0 0 2.4rem 0;
-	letter-spacing: 0.04em;
-}
-
-#fs-button {
-	background: linear-gradient(180deg, #f08c2a 0%, #c95f0e 100%);
-	border: 3px solid #ffb960;
-	color: #fff;
-	padding: 1.05rem 2.4rem;
-	font-size: clamp(1rem, 2.4vw, 1.25rem);
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	border-radius: 14px;
-	cursor: pointer;
-	box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 12px 28px rgba(241, 140, 42, 0.35), inset 0 2px 4px rgba(255,255,255,0.4);
-	transition: transform 0.08s ease, box-shadow 0.08s ease;
-	user-select: none;
-	-webkit-tap-highlight-color: transparent;
-}
-
-#fs-button:active {
-	transform: translateY(3px);
-	box-shadow: 0 3px 0 rgba(0,0,0,0.35), 0 6px 14px rgba(241, 140, 42, 0.3), inset 0 2px 4px rgba(255,255,255,0.4);
-}
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
-
+<script src="hexarena-pwa.js" defer></script>
 	</head>
 	<body>
-		<div id="fs-overlay">
-			<h1 class="fs-title">HEXARENA</h1>
-			<p class="fs-subtitle">3 vs 3 hızlı tempo futbol</p>
-			<button id="fs-button" type="button">▶  TAM EKRAN MODUNA GEÇ</button>
-		</div>
-
 		<canvas id="canvas">
 			Your browser does not support the canvas tag.
 		</canvas>
@@ -182,70 +111,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-// === Fullscreen overlay handling ===
-(function setupFullscreenOverlay() {
-	const overlay = document.getElementById('fs-overlay');
-	const fsBtn = document.getElementById('fs-button');
-
-	const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-
-	if (isStandalone) {
-		overlay.remove();
-		applyFullscreenCSS();
-		return;
-	}
-
-	function applyFullscreenCSS() {
-		document.documentElement.style.height = '100%';
-		document.body.style.position = 'fixed';
-		document.body.style.top = '0';
-		document.body.style.left = '0';
-		document.body.style.right = '0';
-		document.body.style.bottom = '0';
-		document.body.style.width = '100vw';
-		document.body.style.height = '100vh';
-		document.body.style.overflow = 'hidden';
-		document.body.style.margin = '0';
-		setTimeout(() => window.scrollTo(0, 1), 100);
-	}
-
-	function closeOverlay() {
-		overlay.classList.add('fade-out');
-		setTimeout(() => overlay.remove(), 450);
-	}
-
-	async function tryEnterFullscreen() {
-		const elem = document.documentElement;
-		try {
-			if (elem.requestFullscreen) {
-				await elem.requestFullscreen({ navigationUI: 'hide' });
-			} else if (elem.webkitRequestFullscreen) {
-				elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-			} else if (elem.msRequestFullscreen) {
-				elem.msRequestFullscreen();
-			}
-		} catch (err) {
-			console.warn('Fullscreen API failed:', err);
-		}
-		applyFullscreenCSS();
-		try {
-			if (screen.orientation && typeof screen.orientation.lock === 'function') {
-				await screen.orientation.lock('landscape').catch(() => {});
-			}
-		} catch (e) { }
-	}
-
-	fsBtn.addEventListener('click', async () => {
-		await tryEnterFullscreen();
-		closeOverlay();
-	});
-
-	window.addEventListener('orientationchange', () => {
-		setTimeout(() => window.scrollTo(0, 1), 100);
-	});
-})();
-
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":431156,"index.wasm":35749181},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":431060,"index.wasm":37695054},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
