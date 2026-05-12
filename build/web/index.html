@@ -154,119 +154,6 @@ body {
 	transform: translateY(3px);
 	box-shadow: 0 3px 0 rgba(0,0,0,0.35), 0 6px 14px rgba(241, 140, 42, 0.3), inset 0 2px 4px rgba(255,255,255,0.4);
 }
-
-.fs-hint {
-	margin-top: 1.8rem;
-	font-size: 0.82rem;
-	color: rgba(255,255,255,0.55);
-	max-width: 320px;
-	text-align: center;
-	line-height: 1.4;
-	display: none;
-}
-
-.fs-hint.show { display: block; }
-
-#fs-skip {
-	margin-top: 1rem;
-	background: transparent;
-	border: 1px solid rgba(255,255,255,0.25);
-	color: rgba(255,255,255,0.55);
-	padding: 0.5rem 1.2rem;
-	font-size: 0.82rem;
-	border-radius: 8px;
-	cursor: pointer;
-	transition: opacity 0.2s;
-}
-
-#fs-skip:hover { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.45); }
-
-#ios-modal {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.72);
-	backdrop-filter: blur(6px);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 10000;
-	padding: 1rem;
-	transition: opacity 0.3s ease;
-}
-
-#ios-modal.ios-modal-hidden {
-	opacity: 0;
-	pointer-events: none;
-}
-
-.ios-modal-card {
-	background: linear-gradient(180deg, #1a2530 0%, #0d1620 100%);
-	border: 2px solid rgba(255, 217, 90, 0.4);
-	border-radius: 18px;
-	padding: 1.6rem 1.4rem;
-	max-width: 380px;
-	width: 100%;
-	color: #fff;
-	box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-	font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-}
-
-.ios-modal-icon {
-	font-size: 2.8rem;
-	text-align: center;
-	margin-bottom: 0.5rem;
-}
-
-.ios-modal-card h2 {
-	margin: 0 0 0.6rem 0;
-	text-align: center;
-	font-size: 1.25rem;
-	color: #ffd95a;
-}
-
-.ios-modal-text {
-	font-size: 0.9rem;
-	line-height: 1.5;
-	margin: 0 0 1.2rem 0;
-	color: rgba(255,255,255,0.85);
-	text-align: center;
-}
-
-.ios-steps {
-	font-size: 0.88rem;
-	line-height: 1.7;
-	color: rgba(255,255,255,0.92);
-	margin: 0 0 1rem 0;
-	padding-left: 1.4rem;
-}
-
-.ios-steps li { margin-bottom: 0.3rem; }
-
-.ios-warn {
-	background: rgba(255, 158, 50, 0.12);
-	border-left: 3px solid #ff9e32;
-	padding: 0.7rem 0.9rem;
-	border-radius: 6px;
-	font-size: 0.82rem;
-	line-height: 1.4;
-	margin: 0 0 1.2rem 0;
-	color: rgba(255,255,255,0.9);
-}
-
-#ios-modal-close {
-	width: 100%;
-	background: linear-gradient(180deg, #f08c2a 0%, #c95f0e 100%);
-	border: 2px solid #ffb960;
-	color: #fff;
-	padding: 0.85rem;
-	font-size: 1rem;
-	font-weight: 700;
-	border-radius: 10px;
-	cursor: pointer;
-	box-shadow: 0 4px 0 rgba(0,0,0,0.3);
-}
-
-#ios-modal-close:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.3); }
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
@@ -302,7 +189,6 @@ body {
 
 	const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
 
-	// PWA standalone modunda overlay gerekmez (zaten tam ekran)
 	if (isStandalone) {
 		overlay.remove();
 		applyFullscreenCSS();
@@ -310,7 +196,6 @@ body {
 	}
 
 	function applyFullscreenCSS() {
-		// Body'i tam ekran sabit kapla — iOS scroll trick için kritik
 		document.documentElement.style.height = '100%';
 		document.body.style.position = 'fixed';
 		document.body.style.top = '0';
@@ -321,7 +206,6 @@ body {
 		document.body.style.height = '100vh';
 		document.body.style.overflow = 'hidden';
 		document.body.style.margin = '0';
-		// iOS Safari URL bar gizleme tetiklemesi
 		setTimeout(() => window.scrollTo(0, 1), 100);
 	}
 
@@ -332,7 +216,6 @@ body {
 
 	async function tryEnterFullscreen() {
 		const elem = document.documentElement;
-		// Standart Fullscreen API
 		try {
 			if (elem.requestFullscreen) {
 				await elem.requestFullscreen({ navigationUI: 'hide' });
@@ -344,14 +227,12 @@ body {
 		} catch (err) {
 			console.warn('Fullscreen API failed:', err);
 		}
-		// Pseudo-fullscreen CSS (iOS Safari için kritik, diğer platformlarda zarar vermez)
 		applyFullscreenCSS();
-		// Landscape orientation lock (mobil)
 		try {
 			if (screen.orientation && typeof screen.orientation.lock === 'function') {
 				await screen.orientation.lock('landscape').catch(() => {});
 			}
-		} catch (e) { /* iOS reddedebilir, sorun değil */ }
+		} catch (e) { }
 	}
 
 	fsBtn.addEventListener('click', async () => {
@@ -359,13 +240,12 @@ body {
 		closeOverlay();
 	});
 
-	// Sayfa scroll'a tepki: URL bar yine açılırsa, sayfayı kaydır = otomatik gizle
 	window.addEventListener('orientationchange', () => {
 		setTimeout(() => window.scrollTo(0, 1), 100);
 	});
 })();
 
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":424440,"index.wasm":35749181},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":431156,"index.wasm":35749181},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
