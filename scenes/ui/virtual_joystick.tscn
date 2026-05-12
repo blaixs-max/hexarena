@@ -3,28 +3,28 @@
 [ext_resource type="Script" path="res://scripts/components/virtual_joystick.gd" id="1_vj"]
 
 [sub_resource type="StyleBoxFlat" id="SB_ring"]
-bg_color = Color(1, 1, 1, 0.10)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.45)
-corner_radius_top_left = 130
-corner_radius_top_right = 130
-corner_radius_bottom_left = 130
-corner_radius_bottom_right = 130
+bg_color = Color(1, 1, 1, 0.08)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.55)
+corner_radius_top_left = 160
+corner_radius_top_right = 160
+corner_radius_bottom_left = 160
+corner_radius_bottom_right = 160
 
 [sub_resource type="StyleBoxFlat" id="SB_knob"]
-bg_color = Color(1, 1, 1, 0.30)
+bg_color = Color(1, 1, 1, 0.18)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.60)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_left = 50
-corner_radius_bottom_right = 50
+border_color = Color(1, 1, 1, 0.50)
+corner_radius_top_left = 55
+corner_radius_top_right = 55
+corner_radius_bottom_left = 55
+corner_radius_bottom_right = 55
 
 [node name="VirtualJoystick" type="Control"]
 anchor_right = 1.0
@@ -37,38 +37,38 @@ anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 0.0
 anchor_bottom = 1.0
-offset_left = 60.0
-offset_top = -290.0
-offset_right = 280.0
-offset_bottom = -70.0
-custom_minimum_size = Vector2(220, 220)
-size = Vector2(220, 220)
+offset_left = 50.0
+offset_top = -340.0
+offset_right = 310.0
+offset_bottom = -80.0
+custom_minimum_size = Vector2(260, 260)
+size = Vector2(260, 260)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("SB_ring")
 
 [node name="ArrowUp" type="Polygon2D" parent="Base"]
-position = Vector2(110, 32)
-color = Color(1, 1, 1, 0.65)
-polygon = PackedVector2Array(0, -16, 16, 12, 6, 12, 6, 22, -6, 22, -6, 12, -16, 12)
+position = Vector2(130, 38)
+color = Color(1, 1, 1, 0.55)
+polygon = PackedVector2Array(0, -20, 20, 14, 8, 14, 8, 26, -8, 26, -8, 14, -20, 14)
 
 [node name="ArrowDown" type="Polygon2D" parent="Base"]
-position = Vector2(110, 188)
-color = Color(1, 1, 1, 0.65)
-polygon = PackedVector2Array(0, 16, 16, -12, 6, -12, 6, -22, -6, -22, -6, -12, -16, -12)
+position = Vector2(130, 222)
+color = Color(1, 1, 1, 0.55)
+polygon = PackedVector2Array(0, 20, 20, -14, 8, -14, 8, -26, -8, -26, -8, -14, -20, -14)
 
 [node name="ArrowLeft" type="Polygon2D" parent="Base"]
-position = Vector2(32, 110)
-color = Color(1, 1, 1, 0.65)
-polygon = PackedVector2Array(-16, 0, 12, -16, 12, -6, 22, -6, 22, 6, 12, 6, 12, 16)
+position = Vector2(38, 130)
+color = Color(1, 1, 1, 0.55)
+polygon = PackedVector2Array(-20, 0, 14, -20, 14, -8, 26, -8, 26, 8, 14, 8, 14, 20)
 
 [node name="ArrowRight" type="Polygon2D" parent="Base"]
-position = Vector2(188, 110)
-color = Color(1, 1, 1, 0.65)
-polygon = PackedVector2Array(16, 0, -12, -16, -12, -6, -22, -6, -22, 6, -12, 6, -12, 16)
+position = Vector2(222, 130)
+color = Color(1, 1, 1, 0.55)
+polygon = PackedVector2Array(20, 0, -14, -20, -14, -8, -26, -8, -26, 8, -14, 8, -14, 20)
 
 [node name="Knob" type="Panel" parent="Base"]
-custom_minimum_size = Vector2(100, 100)
-size = Vector2(100, 100)
-position = Vector2(60, 60)
+custom_minimum_size = Vector2(110, 110)
+size = Vector2(110, 110)
+position = Vector2(75, 75)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("SB_knob")

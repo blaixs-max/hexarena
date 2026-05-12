@@ -11,6 +11,7 @@ signal sprint_released
 @export var label_color := Color(1, 1, 1, 1)
 @export var press_scale := 0.92
 @export var minimal_mode := false
+@export var letter := ""
 
 var _holding := false
 
@@ -69,11 +70,27 @@ func _draw() -> void:
 func _draw_minimal() -> void:
 	var c: Vector2 = size * 0.5
 	var r: float = min(size.x, size.y) * 0.5 - 4.0
+	# Beyaz transparan daire arka plan (Dream League tarzı)
+	draw_circle(c, r, Color(1, 1, 1, 0.12))
+	draw_arc(c, r - 1.5, 0.0, TAU, 48, Color(1, 1, 1, 0.55), 3.0, true)
 	if _holding:
-		draw_arc(c, r * 0.95, 0.0, TAU, 48, Color(icon_color.r, icon_color.g, icon_color.b, 0.45), 4.0, true)
-	_draw_lightning(c + Vector2(0, -r * 0.32), r * 0.55)
+		draw_arc(c, r * 0.92, 0.0, TAU, 48, Color(icon_color.r, icon_color.g, icon_color.b, 0.65), 4.0, true)
+	if letter != "":
+		_draw_letter_minimal(c + Vector2(0, -r * 0.10), r * 0.92)
+	else:
+		_draw_lightning(c + Vector2(0, -r * 0.32), r * 0.55)
 	if label_text != "":
 		_draw_label(c + Vector2(0, r * 0.62), r * 0.85)
+
+func _draw_letter_minimal(center: Vector2, r: float) -> void:
+	var f: Font = ThemeDB.fallback_font
+	if f == null:
+		return
+	var sz: int = int(r * 1.05)
+	var ts: Vector2 = f.get_string_size(letter, HORIZONTAL_ALIGNMENT_CENTER, -1, sz)
+	var pos: Vector2 = center + Vector2(-ts.x * 0.5, ts.y * 0.32)
+	draw_string_outline(f, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, sz, 5, Color(0, 0, 0, 0.65))
+	draw_string(f, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, sz, label_color)
 
 func _draw_grad_circle(center: Vector2, r: float, top: Color, bot: Color) -> void:
 	var bands := 14

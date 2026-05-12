@@ -71,6 +71,7 @@ var _facing := Vector2.RIGHT
 var stamina := 100.0
 var _is_sprinting := false
 var external_sprint_pressed := false
+var keyboard_sprint_pressed := false
 @export var radius := 22.0
 
 func _ready() -> void:
@@ -216,7 +217,7 @@ func _physics_process(delta: float) -> void:
 		return
 	var has_ball: bool = _ball != null and _ball.owner_player == self
 	var input_mag: float = input_vector.length()
-	var trying_sprint: bool = (input_mag > sprint_threshold) or external_sprint_pressed
+	var trying_sprint: bool = (input_mag > sprint_threshold) or external_sprint_pressed or keyboard_sprint_pressed
 	var can_sprint: bool = stamina > min_stamina_to_sprint
 	_is_sprinting = trying_sprint and can_sprint and input_mag > 0.05
 	if _is_sprinting:

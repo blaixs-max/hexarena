@@ -20,6 +20,7 @@ signal kick_requested(power: float)
 @export var icon_kind := ""
 @export var icon_color := Color(1, 1, 1, 0.95)
 @export var label_color := Color(1, 1, 1, 0.95)
+@export var letter := ""
 
 var _holding := false
 var _hold_start := 0.0
@@ -105,6 +106,9 @@ func _draw() -> void:
 func _draw_minimal() -> void:
 	var c: Vector2 = size * 0.5
 	var r: float = min(size.x, size.y) * 0.5 - 4.0
+	# Beyaz transparan daire arka plan (Dream League tarzı)
+	draw_circle(c, r, Color(1, 1, 1, 0.12))
+	draw_arc(c, r - 1.5, 0.0, TAU, 48, Color(1, 1, 1, 0.55), 3.0, true)
 	var icon_pos: Vector2 = c + Vector2(0, -r * 0.32)
 	var icon_size: float = r * 0.55
 	var glow: float = 0.0
@@ -112,22 +116,35 @@ func _draw_minimal() -> void:
 		glow = 0.25 + 0.4 * _charge
 	if glow > 0.0:
 		var charge_col: Color = _charge_color_lerp(_charge)
-		draw_arc(c, r * 0.95, 0.0, TAU, 48, Color(charge_col.r, charge_col.g, charge_col.b, glow), 4.0, true)
+		draw_arc(c, r * 0.92, 0.0, TAU, 48, Color(charge_col.r, charge_col.g, charge_col.b, glow), 4.0, true)
 		if _charge > 0.01:
-			draw_arc(c, r * 0.95, -PI * 0.5, -PI * 0.5 + TAU * _charge, 48, charge_col, 5.0, true)
-	match icon_kind:
-		"ball_foot":
-			_draw_ball_foot_icon(icon_pos, icon_size)
-		"arrow":
-			_draw_arrow_icon(icon_pos, icon_size)
-		"lightning":
-			_draw_lightning_icon(icon_pos, icon_size)
-		"ball":
-			_draw_ball_icon(icon_pos, icon_size)
-		_:
-			_draw_ball_icon(icon_pos, icon_size)
+			draw_arc(c, r * 0.92, -PI * 0.5, -PI * 0.5 + TAU * _charge, 48, charge_col, 5.0, true)
+	if letter != "":
+		_draw_letter(c + Vector2(0, -r * 0.10), r * 0.92)
+	else:
+		match icon_kind:
+			"ball_foot":
+				_draw_ball_foot_icon(icon_pos, icon_size)
+			"arrow":
+				_draw_arrow_icon(icon_pos, icon_size)
+			"lightning":
+				_draw_lightning_icon(icon_pos, icon_size)
+			"ball":
+				_draw_ball_icon(icon_pos, icon_size)
+			_:
+				_draw_ball_icon(icon_pos, icon_size)
 	if label_text != "":
 		_draw_minimal_label(c + Vector2(0, r * 0.62), r * 0.85)
+
+func _draw_letter(center: Vector2, r: float) -> void:
+	var f: Font = ThemeDB.fallback_font
+	if f == null:
+		return
+	var sz: int = int(r * 1.05)
+	var ts: Vector2 = f.get_string_size(letter, HORIZONTAL_ALIGNMENT_CENTER, -1, sz)
+	var pos: Vector2 = center + Vector2(-ts.x * 0.5, ts.y * 0.32)
+	draw_string_outline(f, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, sz, 5, Color(0, 0, 0, 0.65))
+	draw_string(f, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, sz, icon_color)
 
 func _draw_minimal_label(center: Vector2, r: float) -> void:
 	var f: Font = ThemeDB.fallback_font

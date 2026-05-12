@@ -87,44 +87,56 @@ corner_radius_bottom_left = 4
 corner_radius_bottom_right = 4
 
 [sub_resource type="StyleBoxFlat" id="SB_go_panel"]
-bg_color = Color(0.039, 0.067, 0.094, 0.96)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.243, 0.969, 0.627, 0.9)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_left = 24
-corner_radius_bottom_right = 24
-shadow_color = Color(0, 0, 0, 0.6)
-shadow_size = 24
-
-[sub_resource type="StyleBoxFlat" id="SB_go_btn_primary"]
-bg_color = Color(0.910, 0.451, 0.122, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_left = 18
-corner_radius_bottom_right = 18
-
-[sub_resource type="StyleBoxFlat" id="SB_go_btn_primary_hover"]
-bg_color = Color(1, 0.55, 0.18, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_left = 18
-corner_radius_bottom_right = 18
-
-[sub_resource type="StyleBoxFlat" id="SB_go_btn_secondary"]
-bg_color = Color(0.082, 0.118, 0.176, 1)
+bg_color = Color(0.122, 0.169, 0.220, 0.92)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.30, 0.42, 0.55, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_left = 18
-corner_radius_bottom_right = 18
+border_color = Color(0.561, 0.624, 0.690, 0.65)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_left = 32
+corner_radius_bottom_right = 32
+shadow_color = Color(0, 0, 0, 0.75)
+shadow_size = 32
+
+[sub_resource type="StyleBoxFlat" id="SB_go_btn_primary"]
+bg_color = Color(0.918, 0.467, 0.094, 1)
+border_width_top = 3
+border_width_bottom = 4
+border_color = Color(1, 0.78, 0.42, 0.55)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_left = 28
+corner_radius_bottom_right = 28
+shadow_color = Color(0.733, 0.310, 0.063, 0.55)
+shadow_size = 14
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="SB_go_btn_primary_hover"]
+bg_color = Color(1, 0.553, 0.165, 1)
+border_width_top = 3
+border_width_bottom = 4
+border_color = Color(1, 0.85, 0.5, 0.7)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_left = 28
+corner_radius_bottom_right = 28
+shadow_color = Color(0.733, 0.310, 0.063, 0.65)
+shadow_size = 16
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="SB_go_btn_secondary"]
+bg_color = Color(0.122, 0.169, 0.220, 0.55)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.50, 0.55, 0.60)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_left = 28
+corner_radius_bottom_right = 28
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -363,8 +375,10 @@ alignment = 1
 [node name="Title" type="Label" parent="GameOverPanel/Center/Panel/VBox"]
 text = "MAÇ BİTTİ"
 horizontal_alignment = 1
-theme_override_colors/font_color = Color(0.243, 0.969, 0.627, 1)
-theme_override_font_sizes/font_size = 56
+theme_override_colors/font_color = Color(0.992, 0.835, 0.314, 1)
+theme_override_constants/outline_size = 8
+theme_override_colors/font_outline_color = Color(0.298, 0.149, 0.039, 0.85)
+theme_override_font_sizes/font_size = 64
 
 [node name="ResultLabel" type="Label" parent="GameOverPanel/Center/Panel/VBox"]
 text = "HOME WINS!"
@@ -377,26 +391,30 @@ theme_override_font_sizes/font_size = 72
 [node name="ScoreLabel" type="Label" parent="GameOverPanel/Center/Panel/VBox"]
 text = "0 - 0"
 horizontal_alignment = 1
-theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(0.95, 0.97, 0.98, 1)
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.6)
+theme_override_font_sizes/font_size = 52
 
 [node name="Buttons" type="HBoxContainer" parent="GameOverPanel/Center/Panel/VBox"]
-theme_override_constants/separation = 16
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Rematch" type="Button" parent="GameOverPanel/Center/Panel/VBox/Buttons"]
-custom_minimum_size = Vector2(240, 70)
-text = "TEKRAR OYNA"
+custom_minimum_size = Vector2(260, 78)
+text = "▶  TEKRAR OYNA"
 theme_override_styles/normal = SubResource("SB_go_btn_primary")
 theme_override_styles/hover = SubResource("SB_go_btn_primary_hover")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 26
+theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0.35, 0.16, 0.04, 0.55)
+theme_override_font_sizes/font_size = 28
 
 [node name="Menu" type="Button" parent="GameOverPanel/Center/Panel/VBox/Buttons"]
-custom_minimum_size = Vector2(240, 70)
+custom_minimum_size = Vector2(240, 78)
 text = "ANA MENÜ"
 theme_override_styles/normal = SubResource("SB_go_btn_secondary")
-theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 0.9)
 theme_override_font_sizes/font_size = 26
 
 [node name="Joystick" parent="." instance=ExtResource("2_joy")]
@@ -406,67 +424,51 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -550.0
-offset_top = -550.0
-offset_right = -10.0
-offset_bottom = -10.0
+offset_left = -400.0
+offset_top = -340.0
+offset_right = -20.0
+offset_bottom = -20.0
 mouse_filter = 2
 
-[node name="HexFrameOuter" type="Polygon2D" parent="RightCluster"]
-position = Vector2(270, 270)
-color = Color(0.05, 0.08, 0.12, 0.22)
-polygon = PackedVector2Array(250, 0, 125, 216.51, -125, 216.51, -250, 0, -125, -216.51, 125, -216.51)
-
-[node name="HexFrameBorder" type="Line2D" parent="RightCluster"]
-position = Vector2(270, 270)
-points = PackedVector2Array(250, 0, 125, 216.51, -125, 216.51, -250, 0, -125, -216.51, 125, -216.51, 250, 0)
-width = 5.0
-default_color = Color(1, 1, 1, 0.78)
-
-[node name="HexFrameInnerGlow" type="Line2D" parent="RightCluster"]
-position = Vector2(270, 270)
-points = PackedVector2Array(232, 0, 116, 200.92, -116, 200.92, -232, 0, -116, -200.92, 116, -200.92, 232, 0)
-width = 2.0
-default_color = Color(1, 1, 1, 0.22)
-
 [node name="SprintButton" type="Control" parent="RightCluster"]
-offset_left = 170.0
-offset_top = 70.0
-offset_right = 370.0
-offset_bottom = 270.0
+offset_left = 140.0
+offset_top = 0.0
+offset_right = 280.0
+offset_bottom = 140.0
 mouse_filter = 1
 script = ExtResource("4_sprint")
 icon_color = Color(1, 1, 1, 0.95)
 label_text = "SPRINT"
 label_color = Color(1, 1, 1, 0.95)
 minimal_mode = true
+letter = "C"
 
 [node name="PowerKickButton" type="Control" parent="RightCluster"]
-offset_left = 280.0
-offset_top = 280.0
-offset_right = 480.0
-offset_bottom = 480.0
+offset_left = 40.0
+offset_top = 180.0
+offset_right = 180.0
+offset_bottom = 320.0
 mouse_filter = 1
 script = ExtResource("3_kick")
 label_text = "PASS"
 minimal_mode = true
-icon_kind = "arrow"
 icon_color = Color(1, 1, 1, 0.95)
 label_color = Color(1, 1, 1, 0.95)
 instant = false
 min_kick_power = 0.55
+letter = "B"
 
 [node name="KickButton" type="Control" parent="RightCluster"]
-offset_left = 60.0
-offset_top = 280.0
-offset_right = 260.0
-offset_bottom = 480.0
+offset_left = 240.0
+offset_top = 180.0
+offset_right = 380.0
+offset_bottom = 320.0
 mouse_filter = 1
 script = ExtResource("3_kick")
 label_text = "SHOOT"
 minimal_mode = true
-icon_kind = "ball_foot"
 icon_color = Color(1, 1, 1, 0.95)
 label_color = Color(1, 1, 1, 0.95)
 instant = true
 fixed_power = 0.45
+letter = "A"

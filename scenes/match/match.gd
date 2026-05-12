@@ -108,6 +108,9 @@ func _process(_d: float) -> void:
 			user_player.rpc_id(1, "remote_set_input", input)
 		else:
 			user_player.set_input(input)
+		# Klavyeden Sprint (W) state'ini direkt player'a yansıt
+		if "keyboard_sprint_pressed" in user_player:
+			user_player.keyboard_sprint_pressed = Input.is_action_pressed("sprint")
 	_handle_kick_keyboard()
 
 func _compose_input_vector() -> Vector2:

@@ -158,14 +158,15 @@ func _on_join() -> void:
 	var input: String = ip_field.text.strip_edges()
 	if input == "":
 		input = "127.0.0.1"
-	# Web build: kullanıcı tam URL girebilir (ws://… veya wss://…)
-	if Network.is_web_platform() and (input.begins_with("ws://") or input.begins_with("wss://")):
+	# 'ws://' veya 'wss://' URL → her platformda WebSocket
+	if input.begins_with("ws://") or input.begins_with("wss://"):
 		if Network.join_game_ws(input):
 			connecting_status.text = "Bağlanılıyor: %s..." % input
 			_set_state(State.CONNECTING)
 		else:
 			join_status.text = "WebSocket bağlantısı başarısız"
 		return
+	# Düz IP: web build'de otomatik ws://, native'de ENet
 	if Network.join_game(input):
 		var label: String = ("ws://%s:%d" % [input, Network.DEFAULT_PORT]) if Network.is_web_platform() else input
 		connecting_status.text = "Bağlanılıyor: %s..." % label
