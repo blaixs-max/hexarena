@@ -35,6 +35,10 @@ Thumbs.db
 # Local secrets
 .env
 *.local
+*.local.md
+*.local.*
+credentials.md
+notes/
 
 # Claude Code local settings
 .claude/
