@@ -86,13 +86,15 @@ func _ready() -> void:
 		_set_state(State.MAIN)
 
 func _apply_web_mode_ui() -> void:
-	# Web build: ARKADAŞLA OYNA (LAN) çalışmaz — disable + açıklayıcı text
+	# Web build: tarayıcı sekmesini JS kapatamaz → ÇIKIŞ butonunu gizle
+	quit_btn.visible = false
+	# ARKADAŞLA OYNA (LAN) Web'de çalışmaz — UDP broadcast yasak
 	play_friends_btn.disabled = true
-	play_friends_btn.text = "ARKADAŞLA OYNA (LAN)  ·  Sadece native"
-	# ODA KUR (host) Web'de çalışmaz
+	play_friends_btn.text = "ARKADAŞLA OYNA (LAN)  ·  İndirilebilir sürüm"
+	# ODA KUR (host) Web'de çalışmaz — UDP server yok
 	host_btn.disabled = true
-	host_btn.text = "ODA KUR  ·  Native build gerekli"
-	# Manuel IP'yi göster — varsayılan ws bağlantı
+	host_btn.text = "ODA KUR  ·  İndirilebilir sürüm gerekli"
+	# Manuel IP'yi göster — Web'de varsayılan ws:// bağlantı
 	manual_box.visible = true
 	manual_toggle.visible = false
 	ip_field.placeholder_text = "Sunucu IP veya ws:// URL"
